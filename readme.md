@@ -24,3 +24,8 @@ Password grant client created successfully.
 Client ID: 2
 Client Secret: It8O8Hw68uH2uzq14MBfdGjKkoIYy4wUYJrnyavm
 ```
+
+```
+Client ID: 3
+Client secret: fWSn2MuCq3sIcN35bSe4Qq1fpreKi0ndKVS2rZh4
+```

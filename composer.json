@@ -12,6 +12,7 @@
 		"barryvdh/laravel-ide-helper": "^2.4",
 		"doctrine/dbal": "~2.3",
 		"fideloper/proxy": "^4.0",
+		"guzzlehttp/guzzle": "^6.3",
 		"infyomlabs/adminlte-templates": "5.6.x-dev",
 		"infyomlabs/laravel-generator": "5.6.x-dev",
 		"laravel/framework": "5.6.*",
