@@ -1,18 +1,16 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Repositories\ItemRepository;
-use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
-use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
+use Flash;
 
 class ItemController extends AppBaseController
 {
+
     /** @var  ItemRepository */
     private $itemRepository;
 
@@ -32,8 +30,7 @@ class ItemController extends AppBaseController
         $this->itemRepository->pushCriteria(new RequestCriteria($request));
         $items = $this->itemRepository->all();
 
-        return view('items.index')
-            ->with('items', $items);
+        return view('items.index')->with('items', $items);
     }
 
     /**
@@ -67,7 +64,7 @@ class ItemController extends AppBaseController
     /**
      * Display the specified Item.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -87,7 +84,7 @@ class ItemController extends AppBaseController
     /**
      * Show the form for editing the specified Item.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -107,7 +104,7 @@ class ItemController extends AppBaseController
     /**
      * Update the specified Item in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateItemRequest $request
      *
      * @return Response
@@ -132,7 +129,7 @@ class ItemController extends AppBaseController
     /**
      * Remove the specified Item from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
