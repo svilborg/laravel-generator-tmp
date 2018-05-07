@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\API;
 
 use App\Http\Requests\API\CreateItemAPIRequest;
@@ -14,11 +13,12 @@ use Response;
 
 /**
  * Class ItemController
+ *
  * @package App\Http\Controllers\API
  */
-
 class ItemAPIController extends AppBaseController
 {
+
     /** @var  ItemRepository */
     private $itemRepository;
 
@@ -28,36 +28,9 @@ class ItemAPIController extends AppBaseController
     }
 
     /**
+     *
      * @param Request $request
      * @return Response
-     *
-     * @SWG\Get(
-     *      path="/items",
-     *      summary="Get a listing of the Items.",
-     *      tags={"Item"},
-     *      description="Get all Items",
-     *      produces={"application/json"},
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/Item")
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
      */
     public function index(Request $request)
     {
@@ -69,42 +42,11 @@ class ItemAPIController extends AppBaseController
     }
 
     /**
+     *
      * @param CreateItemAPIRequest $request
      * @return Response
      *
-     * @SWG\Post(
-     *      path="/items",
-     *      summary="Store a newly created Item in storage",
-     *      tags={"Item"},
-     *      description="Store Item",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="Item that should be stored",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Item")
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Item"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
+     *
      */
     public function store(CreateItemAPIRequest $request)
     {
@@ -116,42 +58,10 @@ class ItemAPIController extends AppBaseController
     }
 
     /**
+     *
      * @param int $id
      * @return Response
      *
-     * @SWG\Get(
-     *      path="/items/{id}",
-     *      summary="Display the specified Item",
-     *      tags={"Item"},
-     *      description="Get Item",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of Item",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Item"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
      */
     public function show($id)
     {
@@ -166,50 +76,10 @@ class ItemAPIController extends AppBaseController
     }
 
     /**
+     *
      * @param int $id
      * @param UpdateItemAPIRequest $request
      * @return Response
-     *
-     * @SWG\Put(
-     *      path="/items/{id}",
-     *      summary="Update the specified Item in storage",
-     *      tags={"Item"},
-     *      description="Update Item",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of Item",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Parameter(
-     *          name="body",
-     *          in="body",
-     *          description="Item that should be updated",
-     *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Item")
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  ref="#/definitions/Item"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
      */
     public function update($id, UpdateItemAPIRequest $request)
     {
@@ -228,42 +98,11 @@ class ItemAPIController extends AppBaseController
     }
 
     /**
+     *
      * @param int $id
      * @return Response
      *
-     * @SWG\Delete(
-     *      path="/items/{id}",
-     *      summary="Remove the specified Item from storage",
-     *      tags={"Item"},
-     *      description="Delete Item",
-     *      produces={"application/json"},
-     *      @SWG\Parameter(
-     *          name="id",
-     *          description="id of Item",
-     *          type="integer",
-     *          required=true,
-     *          in="path"
-     *      ),
-     *      @SWG\Response(
-     *          response=200,
-     *          description="successful operation",
-     *          @SWG\Schema(
-     *              type="object",
-     *              @SWG\Property(
-     *                  property="success",
-     *                  type="boolean"
-     *              ),
-     *              @SWG\Property(
-     *                  property="data",
-     *                  type="string"
-     *              ),
-     *              @SWG\Property(
-     *                  property="message",
-     *                  type="string"
-     *              )
-     *          )
-     *      )
-     * )
+     *
      */
     public function destroy($id)
     {
