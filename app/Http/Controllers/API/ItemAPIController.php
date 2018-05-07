@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
+use Auth;
 use Response;
 
 /**
@@ -24,6 +25,11 @@ class ItemAPIController extends AppBaseController
 
     public function __construct(ItemRepository $itemRepo)
     {
+        $this->middleware('auth:api');
+        // if (! Auth::check()) {
+        // return $this->sendError('Not Authenticated', 500);
+        // }
+
         $this->itemRepository = $itemRepo;
     }
 
@@ -34,6 +40,8 @@ class ItemAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
+
         $this->itemRepository->pushCriteria(new RequestCriteria($request));
         $this->itemRepository->pushCriteria(new LimitOffsetCriteria($request));
         $items = $this->itemRepository->all();
