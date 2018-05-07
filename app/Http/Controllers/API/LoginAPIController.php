@@ -63,12 +63,16 @@ class LoginAPIController extends AppBaseController
         }
 
         // Create a refresh token cookie
-//         $this->cookie->queue(self::REFRESH_TOKEN, $data["refresh_token"], 864000, null, null, false, true); // HttpOnly
+        // $this->cookie->queue(self::REFRESH_TOKEN, $data["refresh_token"], 864000, null, null, false, true); // HttpOnly
 
-        return [
-            'access_token' => $data["access_token"],
-            'expires_in' => $data["expires_in"]
+        $data = [
+            'access_token' => $result["access_token"],
+            'expires_in' => $result["expires_in"]
         ];
+
+
+
+        return $this->sendResponse($data, 'Success');
     }
 
     private function getAccessToken($data)
@@ -76,12 +80,23 @@ class LoginAPIController extends AppBaseController
         $http = new Client();
 
         try {
-            $response = $http->post('http://localhost:8000/oauth/token', [
-                'form_params' => $data
+            $response = $http->post('http://' . $_SERVER["SERVER_ADDR"] . '/oauth/token', [
+                'form_params' => $data,
+                'headers' => [
+                    'Host' => 'larapi.local'
+                ]
             ]);
 
             $result = json_decode((string) $response->getBody(), true);
+
+            return $result;
+
+
         } catch (\Exception $e) {
+
+            var_dump($e->getMessage());
+            die();
+
             return null;
         }
         return $result;
