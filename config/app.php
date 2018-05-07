@@ -167,7 +167,8 @@ return [
 
         // Jlapp\Swaggervel\SwaggervelServiceProvider::class,
 
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
 
     ],
 
