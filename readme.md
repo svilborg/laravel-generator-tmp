@@ -3,7 +3,15 @@
 
 Laravel Generator + Ide Helper + Samples + From Table - Swagger (too broken)
 
-Sample
+
+### Generic
+
+git clone https://github.com/svilborg/laravel-generator-tmp.git
+
+
+### Sample
+
+git clone -b sample-data https://github.com/svilborg/laravel-generator-tmp.git
 
 ```
 php artisan infyom:api_scaffold Item
@@ -11,9 +19,10 @@ php artisan infyom:api_scaffold Item
 
 http://labs.infyom.com/laravelgenerator/docs/5.6/getting-started
 
-```
-php artisan passport:install
-```
+
+### Authentication Oauth2
+
+git clone -b api-auth https://github.com/svilborg/laravel-generator-tmp.git
 
 ```
 Encryption keys generated successfully.
