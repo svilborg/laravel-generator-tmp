@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Validator, DB, Hash, Mail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Mail\Message;
 use App\Http\Controllers\AppBaseController;
@@ -12,6 +13,12 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends AppBaseController
 {
+    public function __construct()
+    {
+        $this->middleware('api');
+
+//         var_dump(Auth::class);
+    }
 
     /**
      * API Register
@@ -81,7 +88,7 @@ class AuthController extends AppBaseController
             ]);
         }
 
-//         $credentials['is_verified'] = 1;
+        // $credentials['is_verified'] = 1;
 
         try {
             // attempt to verify the credentials and create a token for the user
@@ -106,4 +113,66 @@ class AuthController extends AppBaseController
             ]
         ]);
     }
+
+    /**
+     * API Refresh, on success return JWT Auth token
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh(Request $request)
+    {
+        $token = $request->get('token');
+
+        if (! $token) {
+            return response()->json([
+                'success' => false,
+                'error' => "Missing Token"
+            ]);
+        }
+
+        try {
+            // attempt to verify the credentials and create a token for the user
+            if (! $retoken = Auth::guard('api')->refresh($token)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Wrong Token.'
+                ], 401);
+            }
+        } catch (JWTException $e) {
+            // something went wrong whilst attempting to encode the token
+            return response()->json([
+                'success' => false,
+                'error' => 'Token Error : ' . $e->getMessage()
+            ], 500);
+        }
+
+        // all good so return the token
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'token' => $retoken
+            ]
+        ]);
+    }
+
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => $this->guard()->factory()->getTTL() * 60
+        ]);
+    }
+
+
+
+
 }
