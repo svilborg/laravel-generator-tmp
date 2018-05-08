@@ -16,8 +16,6 @@ class AuthController extends AppBaseController
     public function __construct()
     {
         $this->middleware('api');
-
-//         var_dump(Auth::class);
     }
 
     /**
@@ -59,10 +57,23 @@ class AuthController extends AppBaseController
             'token' => $verification_code
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Thanks for signing up! Please check your email to complete your registration.'
-        ]);
+        try {
+            // attempt to verify the credentials and create a token for the user
+            if (! $token = $this->guard()->attempt($credentials)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'We cant find an account with this credentials.'
+                ], 401);
+            }
+        } catch (JWTException $e) {
+            // something went wrong whilst attempting to encode the token
+            return response()->json([
+                'success' => false,
+                'error' => 'Failed to login, please try again.'
+            ], 500);
+        }
+
+        return $this->respondWithToken($token);
     }
 
     /**
@@ -88,11 +99,9 @@ class AuthController extends AppBaseController
             ]);
         }
 
-        // $credentials['is_verified'] = 1;
-
         try {
             // attempt to verify the credentials and create a token for the user
-            if (! $token = JWTAuth::attempt($credentials)) {
+            if (! $token = $this->guard()->attempt($credentials)) {
                 return response()->json([
                     'success' => false,
                     'error' => 'We cant find an account with this credentials.'
@@ -105,13 +114,20 @@ class AuthController extends AppBaseController
                 'error' => 'Failed to login, please try again.'
             ], 500);
         }
-        // all good so return the token
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'token' => $token
-            ]
-        ]);
+
+        return $this->respondWithToken($token);
+    }
+
+    /**
+     * Log the user out (Invalidate the token)
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        $this->guard()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
     }
 
     /**
@@ -166,10 +182,23 @@ class AuthController extends AppBaseController
     protected function respondWithToken($token)
     {
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => $this->guard()->factory()->getTTL() * 60
+            'success' => true,
+            'data' => [
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => $this->guard()->factory()->getTTL() * 60
+                ]
         ]);
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\Guard
+     */
+    public function guard()
+    {
+        return Auth::guard('api');
     }
 
 
