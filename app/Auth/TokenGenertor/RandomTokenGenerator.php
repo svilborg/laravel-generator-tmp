@@ -15,8 +15,6 @@ class RandomTokenGenerator implements TokenGeneratorInterface
 
     public function generate($payload = [])
     {
-        var_dump($payload);
-        die;
 
         return str_random($this->size);
     }
