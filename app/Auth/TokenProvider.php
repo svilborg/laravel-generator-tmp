@@ -4,16 +4,24 @@ namespace App\Auth;
 use App\Auth\Contracts\TokenProviderInterface;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Auth\Contracts\TokenGeneratorInterface;
+use App\Auth\TokenGenerator\RandomTokenGenerator;
 
 class TokenProvider implements TokenProviderInterface
 {
 
     private $expires_in = 24 * 60 * 60;
 
+    private $tokenGenerator = null;
+
+    public function __construct(TokenGeneratorInterface $tokenGenerator = null) {
+        $this->tokenGenerator = $tokenGenerator ?? new RandomTokenGenerator();
+    }
+
     public function createToken($user_id)
     {
-        $verification_code = str_random(30); // Generate verification code
-        $refresh_code = str_random(30); // Generate verification code
+        $verification_code = $this->tokenGenerator->generate(); // Generate verification code
+        $refresh_code = $this->tokenGenerator->generate();
 
         $token = DB::table('tokens')->insert([
             'user_id' => $user_id,
