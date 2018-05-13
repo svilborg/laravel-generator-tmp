@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class UserTokenProvider implements UserProvider
 {
@@ -44,7 +45,6 @@ class UserTokenProvider implements UserProvider
 
     public function retrieveByCredentials(array $credentials)
     {
-//         var_dump($credentials);die;
         // implementation upto user.
         // how he wants to implement -
         // let's try to assume that the credentials ['username', 'password'] given
@@ -61,5 +61,21 @@ class UserTokenProvider implements UserProvider
     {
         $plain = $credentials['password'];
         return app('hash')->check($plain, $user->getAuthPassword());
+    }
+
+    public function createToken($user_id)
+    {
+        $verification_code = str_random(30); // Generate verification code
+
+        DB::table('tokens')->insert([
+            'user_id' => $user_id,
+            'access_token' => $verification_code,
+            'refresh_token' => "",
+            'expires_in' => date("Y-m-d H:i:s", time() + 24 * 60 * 60),
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s")
+        ]);
+
+        return $verification_code;
     }
 }
