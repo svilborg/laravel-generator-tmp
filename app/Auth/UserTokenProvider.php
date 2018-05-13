@@ -44,7 +44,7 @@ class UserTokenProvider implements UserProvider
 
     public function retrieveByCredentials(array $credentials)
     {
-        var_dump($credentials);die;
+//         var_dump($credentials);die;
         // implementation upto user.
         // how he wants to implement -
         // let's try to assume that the credentials ['username', 'password'] given
