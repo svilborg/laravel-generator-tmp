@@ -20,8 +20,17 @@ class TokenProvider implements TokenProviderInterface
 
     public function createToken($user_id)
     {
-        $verification_code = $this->tokenGenerator->generate(); // Generate verification code
-        $refresh_code = $this->tokenGenerator->generate();
+        $user = DB::table('users')->where('id', $user_id)->first();
+
+        if($user) {
+            $user = (array) $user;
+        }
+        else {
+            $user =  [];
+        }
+
+        $verification_code = $this->tokenGenerator->generate($user); // Generate verification code
+        $refresh_code = $this->tokenGenerator->generate($user);
 
         $token = DB::table('tokens')->insert([
             'user_id' => $user_id,
