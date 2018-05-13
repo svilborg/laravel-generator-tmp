@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Exceptions;
 
 use Exception;
@@ -46,8 +45,40 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, \Exception $exception)
     {
+        /** @var \Request $request */
+        if ($request->is('api/*') || $request->expectsJson()) {
+
+            $response = [];
+            if (method_exists($exception, 'getStatusCode')) {
+                $statusCode = $exception->getStatusCode();
+            } else {
+                $statusCode = 500;
+            }
+
+            switch ($statusCode) {
+                case 404:
+                    $response['error'] = 'Not Found';
+                    break;
+
+                case 403:
+                    $response['error'] = 'Forbidden';
+                    break;
+
+                default:
+                    $response['error'] = $exception->getMessage();
+                    break;
+            }
+
+            $response['message'] = $exception->getMessage();
+            $response['code'] = $statusCode;
+
+            return response()->json($response);
+        }
+
+
+
         return parent::render($request, $exception);
     }
 }
