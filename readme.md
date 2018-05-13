@@ -22,7 +22,7 @@ http://labs.infyom.com/laravelgenerator/docs/5.6/getting-started
 
 ### JWT Token Authentication
 
-git clone -b t https:/token-auth/github.com/svilborg/laravel-generator-tmp.git
+git clone -b jwt-token-auth https://github.com/svilborg/laravel-generator-tmp.git
 
 
 - Login
