@@ -9,7 +9,7 @@ Laravel Generator + Ide Helper + Samples + From Table - Swagger (too broken)
 git clone https://github.com/svilborg/laravel-generator-tmp.git
 
 
-### Sample
+### Sample Data (No Authnetication)
 
 git clone -b sample-data https://github.com/svilborg/laravel-generator-tmp.git
 
@@ -18,6 +18,14 @@ php artisan infyom:api_scaffold Item
 ```
 
 http://labs.infyom.com/laravelgenerator/docs/5.6/getting-started
+
+### Custom API Token Auth
+
+git clone -b api-token-auth https://github.com/svilborg/laravel-generator-tmp.git
+
+```
+http://127.0.0.1:8000/api/items?access_token=test
+```
 
 
 ### JWT Token Authentication
