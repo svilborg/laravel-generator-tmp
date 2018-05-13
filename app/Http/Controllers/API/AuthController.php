@@ -125,47 +125,47 @@ class AuthController extends AppBaseController
         return response()->json(['message' => 'Successfully logged out']);
     }
 
-//     /**
-//      * API Refresh, on success return JWT Auth token
-//      *
-//      * @param Request $request
-//      * @return \Illuminate\Http\JsonResponse
-//      */
-//     public function refresh(Request $request)
-//     {
-//         $token = $request->get('token');
+    /**
+     * API Refresh, on success return JWT Auth token
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh(Request $request)
+    {
+        $token = $request->get('token');
 
-//         if (! $token) {
-//             return response()->json([
-//                 'success' => false,
-//                 'error' => "Missing Token"
-//             ]);
-//         }
+        if (! $token) {
+            return response()->json([
+                'success' => false,
+                'error' => "Missing Token"
+            ]);
+        }
 
-//         try {
-//             // attempt to verify the credentials and create a token for the user
-//             if (! $retoken = Auth::guard('api')->refresh($token)) {
-//                 return response()->json([
-//                     'success' => false,
-//                     'error' => 'Wrong Token.'
-//                 ], 401);
-//             }
-//         } catch (JWTException $e) {
-//             // something went wrong whilst attempting to encode the token
-//             return response()->json([
-//                 'success' => false,
-//                 'error' => 'Token Error : ' . $e->getMessage()
-//             ], 500);
-//         }
+        try {
+            // attempt to verify the credentials and create a token for the user
+            if (! $retoken = Auth::guard('api_token')->refresh($token)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Wrong Token.'
+                ], 401);
+            }
+        } catch (JWTException $e) {
+            // something went wrong whilst attempting to encode the token
+            return response()->json([
+                'success' => false,
+                'error' => 'Token Error : ' . $e->getMessage()
+            ], 500);
+        }
 
-//         // all good so return the token
-//         return response()->json([
-//             'success' => true,
-//             'data' => [
-//                 'token' => $retoken
-//             ]
-//         ]);
-//     }
+        // all good so return the token
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'token' => $retoken
+            ]
+        ]);
+    }
 
     /**
      * Get the token array structure.
@@ -179,10 +179,8 @@ class AuthController extends AppBaseController
         return response()->json([
             'success' => true,
             'data' => [
-                'access_token' => $token,
-                'token_type' => 'bearer',
-                'expires_in' => 60
-                ]
+                'token' => $token
+            ]
         ]);
     }
 

@@ -20,8 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group([
     'middleware' => 'api'
 ], function ($router) {
-    Route::post('register', 'AuthController@register');
-    Route::post('login', 'AuthController@login');
+    Route::get('register', 'AuthController@register');
+    Route::get('login', 'AuthController@login');
+    Route::get('refresh', 'AuthController@refresh');
 });
 
 Route::group(['middleware' => 'auth:api_token'], function(){

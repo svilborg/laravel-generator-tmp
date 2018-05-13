@@ -63,19 +63,4 @@ class UserTokenProvider implements UserProvider
         return app('hash')->check($plain, $user->getAuthPassword());
     }
 
-    public function createToken($user_id)
-    {
-        $verification_code = str_random(30); // Generate verification code
-
-        DB::table('tokens')->insert([
-            'user_id' => $user_id,
-            'access_token' => $verification_code,
-            'refresh_token' => "",
-            'expires_in' => date("Y-m-d H:i:s", time() + 24 * 60 * 60),
-            'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
-        ]);
-
-        return $verification_code;
-    }
 }

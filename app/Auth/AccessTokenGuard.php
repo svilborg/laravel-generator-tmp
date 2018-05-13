@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Auth\Contracts\TokenProviderInterface;
 
 class AccessTokenGuard implements Guard
 {
@@ -17,8 +18,15 @@ class AccessTokenGuard implements Guard
 
     private $request;
 
-    public function __construct(UserProvider $provider, Request $request, $configuration)
+    /**
+     *
+     * @var TokenProviderInterface
+     */
+    private $tokenProvider = null;
+
+    public function __construct(TokenProviderInterface $tokenProvider, UserProvider $provider, Request $request, $configuration)
     {
+        $this->tokenProvider = $tokenProvider;
         $this->provider = $provider;
         $this->request = $request;
         // key to check in request
@@ -28,9 +36,7 @@ class AccessTokenGuard implements Guard
     }
 
     public function user()
-
     {
-
         if (! is_null($this->user)) {
             return $this->user;
         }
@@ -92,7 +98,7 @@ class AccessTokenGuard implements Guard
 
         if ($user = $this->provider->retrieveByCredentials($credentialsRetrieve)) {
             if ($this->provider->validateCredentials($user, $credentials)) {
-                $token = $this->provider->createToken($user->id);
+                $token = $this->tokenProvider->createToken($user->id);
 
                 return $token;
             } else {
@@ -103,5 +109,14 @@ class AccessTokenGuard implements Guard
         return false;
     }
 
+    public function refresh($token)
+    {
+        $token = $this->tokenProvider->refreshToken($token);
 
+        if ($token) {
+            return $token;
+        }
+
+        return false;
+    }
 }
