@@ -18,4 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::resource('items', 'ItemAPIController');
+Route::group(['middleware' => 'auth:api_token'], function(){
+    // AUTHENTICATED users here,
+    Route::resource('items', 'ItemAPIController');
+});

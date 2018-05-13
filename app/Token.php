@@ -11,7 +11,12 @@ class Token extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'access_token',
+        'user_id',
+        'refresh_token',
+        'expires_in'
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -19,4 +24,9 @@ class Token extends Authenticatable
      * @var array
      */
     protected $hidden = [];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

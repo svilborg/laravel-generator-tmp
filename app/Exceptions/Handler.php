@@ -71,6 +71,7 @@ class Handler extends ExceptionHandler
                     break;
             }
 
+
             $response['message'] = $exception->getMessage();
             $response['code'] = $statusCode;
 

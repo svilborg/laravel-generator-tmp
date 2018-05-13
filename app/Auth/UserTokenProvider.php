@@ -17,6 +17,7 @@ class UserTokenProvider implements UserProvider
 
     public function __construct(User $user, Token $token)
     {
+
         $this->user = $user;
         $this->token = $token;
     }
@@ -31,6 +32,8 @@ class UserTokenProvider implements UserProvider
         $token = $this->token->with('user')
             ->where($identifier, $token)
             ->first();
+
+
         return $token && $token->user ? $token->user : null;
     }
 
@@ -41,6 +44,7 @@ class UserTokenProvider implements UserProvider
 
     public function retrieveByCredentials(array $credentials)
     {
+        var_dump($credentials);die;
         // implementation upto user.
         // how he wants to implement -
         // let's try to assume that the credentials ['username', 'password'] given
