@@ -21,6 +21,10 @@ Route::get('/home', [
     'uses' => 'HomeController@index'
 ]);
 
-Route::resource('items', 'ItemController');
+Route::group(['middleware' =>['auth', 'auth:web']], function () {
 
-Route::resource('users', 'UserController');
+    Route::resource('items', 'ItemController');
+
+    Route::resource('users', 'UserController');
+
+});

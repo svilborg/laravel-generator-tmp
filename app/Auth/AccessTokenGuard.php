@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Auth;
 
 use Illuminate\Auth\GuardHelpers;
@@ -69,7 +68,6 @@ class AccessTokenGuard implements Guard
      */
     public function validate(array $credentials = [])
     {
-
         if (empty($credentials[$this->inputKey])) {
             return false;
         }
@@ -86,29 +84,34 @@ class AccessTokenGuard implements Guard
 
     public function attempt(array $credentials = [])
     {
-        $credentials = [
+        $credentialsRetrieve = [
             $this->storageKey => $credentials
         ];
 
-        if ($user = $this->provider->retrieveByCredentials($credentials)) {
-            $token = $this->createToken($user->id);
+        if ($user = $this->provider->retrieveByCredentials($credentialsRetrieve)) {
+            if ($this->provider->validateCredentials($user, $credentials)) {
+                $token = $this->createToken($user->id);
 
-            return $token;
+                return $token;
+            } else {
+                // die("KO");
+            }
         }
 
         return false;
     }
 
-    private function createToken($user_id) {
+    private function createToken($user_id)
+    {
         $verification_code = str_random(30); // Generate verification code
 
         DB::table('tokens')->insert([
             'user_id' => $user_id,
             'access_token' => $verification_code,
             'refresh_token' => "",
-            'expires_in' => date("Y-m-d H:i:s", time() + 24*60*60),
+            'expires_in' => date("Y-m-d H:i:s", time() + 24 * 60 * 60),
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s")
         ]);
 
         return $verification_code;
