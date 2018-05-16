@@ -1,8 +1,16 @@
 
 ## Laravel Generator Template App
 
+Skeleton for Laravel Generator with Token authentications
 Laravel Generator + Ide Helper + Samples + From Table - Swagger (too broken)
 
+Different branches contain :
+
+- Generic
+- Generic + Sample Data
+- Custom API Token Authentication
+- JWT Token Authentication
+- OAuth2 Authentication
 
 ### Generic
 
