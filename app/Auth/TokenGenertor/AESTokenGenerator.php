@@ -14,7 +14,7 @@ class AESTokenGenerator implements TokenGeneratorInterface
     {
         $this->method = $method;
         $this->password = $password ?? "s3cr3tlf38op";
-        $this->iv = $iv ?? "385e33f74144tyrdft";
+        $this->iv = $iv ?? "385e33f74144tyrd";
     }
 
     public function generate($payload = [])
@@ -29,7 +29,7 @@ class AESTokenGenerator implements TokenGeneratorInterface
     {
         $decrypted = openssl_decrypt(base64_decode($token), $this->method, $this->password, OPENSSL_RAW_DATA, $this->iv);
 
-        $payload = json_decode($decrypted);
+        $payload = json_decode($decrypted, true);
 
         return $payload;
     }
