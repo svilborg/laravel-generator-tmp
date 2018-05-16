@@ -32,7 +32,7 @@ class TokenProvider implements TokenProviderInterface
         $verification_code = $this->tokenGenerator->generate($user); // Generate verification code
         $refresh_code = $this->tokenGenerator->generate($user);
 
-        $token = DB::table('tokens')->insert([
+        DB::table('tokens')->insert([
             'user_id' => $user_id,
             'access_token' => $verification_code,
             'refresh_token' => $refresh_code,
