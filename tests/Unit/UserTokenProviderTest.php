@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Auth\TokenGenerator\RandomTokenGenerator;
 use App\Auth\TokenGenerator\AESTokenGenerator;
 use App\Auth\UserTokenProvider;
+use Illuminate\Support\Facades\Hash;
 
 class UserTokenProviderTest extends TestCase
 {
@@ -69,6 +70,25 @@ class UserTokenProviderTest extends TestCase
 
         $this->assertEquals([], $provider->retrieveByCredentials([
             "username" => "test"
+        ]));
+    }
+
+    public function testvalidateCredentialsTest()
+    {
+        $mockUser = \Mockery::mock(new \App\User());
+        $mockUser->shouldReceive('getAuthPassword')
+            ->andReturn(Hash::make("test"));
+
+        $mockToken = \Mockery::mock(new \App\Token());
+
+        $provider = new UserTokenProvider($mockUser, $mockToken);
+
+        $this->assertEquals(false, $provider->validateCredentials($mockUser, [
+            "password" => "test1"
+        ]));
+
+        $this->assertEquals(true, $provider->validateCredentials($mockUser, [
+            "password" => "test"
         ]));
     }
 }
